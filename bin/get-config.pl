@@ -50,24 +50,12 @@ if (!$response->is_success()) {
 
 my $content = $response->content();
 
-if (open(OF, '>', 'config.response')) {
-	print OF $content;
-	close(OF);
-}
-
 my $backup = DDWRTBackup->new();
 $backup->data($content);
 
 my $hr = $backup->asHash();
 
-foreach my $key (sort (keys %$hr)) {
-	my $value = $hr->{$key};
-
-	printf("%-40s | (%s)\n",
-		$key,
-		(defined $value) ? $value : 'undef',
-	);
-}
+print YAML::Dump($hr);
 
 print STDERR "Success!\n";
 
